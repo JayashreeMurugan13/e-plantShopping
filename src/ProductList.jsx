@@ -1,25 +1,53 @@
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useState } from "react";
 import { addItem } from "./CartSlice";
 
 const plantsArray = [
   {
-    name: "Aloe Vera",
-    cost: "$10",
-    description: "Medicinal plant for healing",
-    image: "https://via.placeholder.com/150",
-    category: "Medicinal",
+    category: "Aromatic Plants",
+    name: "Lavender",
+    image: "https://images.unsplash.com/photo-1501004318641-b39e6451bec6",
+    description: "Fragrant plant known for relaxation and stress relief.",
+    cost: "$10"
   },
   {
-    name: "Lavender",
-    cost: "$12",
-    description: "Aromatic and relaxing plant",
-    image: "https://via.placeholder.com/150",
-    category: "Aromatic",
+    category: "Aromatic Plants",
+    name: "Rosemary",
+    image: "https://images.unsplash.com/photo-1587300003388-59208cc962cb",
+    description: "Aromatic herb used in cooking and home gardens.",
+    cost: "$12"
   },
+  {
+    category: "Medicinal Plants",
+    name: "Aloe Vera",
+    image: "https://images.unsplash.com/photo-1596547609652-9cf5d8c7c0b5",
+    description: "Medicinal plant used for skin care and healing.",
+    cost: "$15"
+  },
+  {
+    category: "Medicinal Plants",
+    name: "Tulsi",
+    image: "https://images.unsplash.com/photo-1621955964441-c173e01cbb8d",
+    description: "Sacred plant with powerful medicinal properties.",
+    cost: "$8"
+  },
+  {
+    category: "Indoor Plants",
+    name: "Snake Plant",
+    image: "https://images.unsplash.com/photo-1616627981465-8c60f2bb1b6f",
+    description: "Low maintenance indoor plant that purifies air.",
+    cost: "$20"
+  },
+  {
+    category: "Indoor Plants",
+    name: "Money Plant",
+    image: "https://images.unsplash.com/photo-1601004890684-d8cbf643f5f2",
+    description: "Popular indoor plant believed to bring prosperity.",
+    cost: "$18"
+  }
 ];
 
-function ProductList() {
+const ProductList = () => {
   const dispatch = useDispatch();
   const [addedToCart, setAddedToCart] = useState({});
 
@@ -28,25 +56,37 @@ function ProductList() {
     setAddedToCart({ ...addedToCart, [plant.name]: true });
   };
 
-  return (
-    <div className="product-grid">
-      {plantsArray.map((plant, index) => (
-        <div className="product-card" key={index}>
-          <img src={plant.image} alt={plant.name} />
-          <h3>{plant.name}</h3>
-          <p>{plant.description}</p>
-          <p>{plant.cost}</p>
+  const categories = [...new Set(plantsArray.map(p => p.category))];
 
-          <button
-            disabled={addedToCart[plant.name]}
-            onClick={() => handleAddToCart(plant)}
-          >
-            {addedToCart[plant.name] ? "Added to Cart" : "Add to Cart"}
-          </button>
+  return (
+    <div>
+      {categories.map(category => (
+        <div key={category}>
+          <h2>{category}</h2>
+
+          <div className="product-grid">
+            {plantsArray
+              .filter(plant => plant.category === category)
+              .map(plant => (
+                <div className="product-card" key={plant.name}>
+                  <img src={plant.image} alt={plant.name} width="200" />
+                  <h3>{plant.name}</h3>
+                  <p>{plant.description}</p>
+                  <p>{plant.cost}</p>
+
+                  <button
+                    onClick={() => handleAddToCart(plant)}
+                    disabled={addedToCart[plant.name]}
+                  >
+                    {addedToCart[plant.name] ? "Added to Cart" : "Add to Cart"}
+                  </button>
+                </div>
+              ))}
+          </div>
         </div>
       ))}
     </div>
   );
-}
+};
 
 export default ProductList;
