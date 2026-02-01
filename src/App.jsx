@@ -1,24 +1,23 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import ProductList from "./ProductList";
-import CartItem from "./CartItem";
+import "./App.css";
 
 function App() {
-  const [showCart, setShowCart] = useState(false);
+  const [showProducts, setShowProducts] = useState(false);
 
   return (
-    <>
-      <nav className="navbar">
-        <h1>Paradise Nursery</h1>
-        <button onClick={() => setShowCart(false)}>Plants</button>
-        <button onClick={() => setShowCart(true)}>Cart</button>
-      </nav>
-
-      {showCart ? (
-        <CartItem onContinueShopping={() => setShowCart(false)} />
+    <div className="background-image">
+      {!showProducts ? (
+        <div className="landing-page">
+          <h1>Welcome to Paradise Nursery</h1>
+          <button onClick={() => setShowProducts(true)}>
+            Get Started
+          </button>
+        </div>
       ) : (
         <ProductList />
       )}
-    </>
+    </div>
   );
 }
 
